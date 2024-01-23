@@ -1,12 +1,14 @@
-
-import './App.css'
+import {DarkTheme} from "./theme/theme";
+import {ThemeProvider, CssBaseline} from "@mui/material"
+// import './App.css'
 import NavBar from './components/NavBar'
 const App = () => {
 
   return (
-    <>
-<NavBar/>
-    </>
+    <ThemeProvider theme={DarkTheme}>
+      <CssBaseline/>
+      <NavBar/>
+    </ThemeProvider>
   )
 }
 
