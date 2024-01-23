@@ -1,14 +1,27 @@
 import {DarkTheme} from "./theme/theme";
 import {ThemeProvider, CssBaseline} from "@mui/material"
+import {Routes, Route} from "react-router";
+import DummyComponent from "./DummyComponent";
+import SearchContextProvider from "./context/SearchContextProvider";
 // import './App.css'
 import NavBar from './components/NavBar'
-const App = () => {
+import UserContextProvider from "./context/UserContextProvider";
 
+
+const App = () => {
   return (
     <ThemeProvider theme={DarkTheme}>
-      <CssBaseline/>
-      <NavBar/>
-      {/*  */}
+      <SearchContextProvider>
+        <UserContextProvider>
+          <CssBaseline/>
+          <NavBar/>
+          <Routes>
+            <Route exact path='/' Component={DummyComponent} />
+            <Route path='/about' Component={DummyComponent} />
+            <Route path='/contact' Component={DummyComponent} />
+          </Routes>
+        </UserContextProvider>
+      </SearchContextProvider>
     </ThemeProvider>
   )
 }
