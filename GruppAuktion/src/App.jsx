@@ -7,6 +7,7 @@ import SearchContextProvider from "./context/SearchContextProvider";
 import NavBar from './components/NavBar'
 import UserContextProvider from "./context/UserContextProvider";
 import CreateAuction from "./components/Views/CreateAuction";
+import LoginPage from "./components/Views/LoginPage/components/LoginPage.jsx";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route exact path='/' Component={DummyComponent} />
             <Route path='/add-auction' Component={CreateAuction} /> {/* Cissi jobbar på denna lägg till auktion */}
             <Route path='/contact' Component={DummyComponent} />
+            <Route path='/Login' Component={LoginPage} />
           </Routes>
         </UserContextProvider>
       </SearchContextProvider>
