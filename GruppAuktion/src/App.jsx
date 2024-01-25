@@ -6,7 +6,7 @@ import SearchContextProvider from "./context/SearchContextProvider";
 import './App.css'
 import NavBar from './components/NavBar'
 import UserContextProvider from "./context/UserContextProvider";
-import AuctionList from "./components/Views/AuctionList";
+import AuctionsPage from "./components/Views/AuctionsPage/AuctionsPage";
 
 const App = () => {
   return (
@@ -16,9 +16,12 @@ const App = () => {
           <CssBaseline/>
           <NavBar/>
           <Routes>
-            <Route exact path='/' Component={AuctionList} />
+            <Route exact path='/' Component={AuctionsPage} />
             <Route path='/about' Component={DummyComponent} />
             <Route path='/contact' Component={DummyComponent} />
+            <Route path='/auctions' Component={AuctionsPage} />
+            <Route path='/auctions/open' Component={AuctionsPage} />
+
           </Routes>
         </UserContextProvider>
       </SearchContextProvider>

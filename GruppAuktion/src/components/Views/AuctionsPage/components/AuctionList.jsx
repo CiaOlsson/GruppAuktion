@@ -1,66 +1,15 @@
 import React, {useEffect} from 'react'
 import {Container, Typography, Grid} from "@mui/material"
-import { useSearchContext } from '../../../../context/SearchContextProvider'
+import AuctionCard from './AuctionCard'
 
-const AuctionList = () => {
-    const {searchString} = useSearchContext();
-    let auctions = [];
-    useEffect(() => {
-        const getAuctions = async() => {
-            const auctions = await fetch("api/auktion/100")
-                        .then(res => res.json())
-                        .then(data => data)
-                        .catch(err => console.log(err)) 
-            console.log(auctions);
-        }
-        auctions = getAuctions()
-    }, [])
+const AuctionList = (props) => {
+    
     return (
-    <Container sx={{display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column", backgroundColor:"gray", width:"100%"}}>
-        <Typography variant="h4">Auktioner</Typography>
         <Grid container spacing={3}>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-            <Grid item xs={3}>
-                <Typography variant="body1">Hello World!</Typography>
-            </Grid>
-
+            {props.auctions.map((auction, idx) => {
+                return <AuctionCard key={idx} auction={auction} />
+            })}
         </Grid>
-    </Container>
   )
 }
 

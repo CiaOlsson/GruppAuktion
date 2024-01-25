@@ -14,7 +14,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Stack } from '@mui/material';
+import { Link, Stack } from '@mui/material';
+import {NavLink} from "react-router-dom"
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -160,8 +161,10 @@ export default function NavBar() {
       <AppBar position="static">
         <Toolbar sx={{flexDirection:"row", justifyContent:"space-between", alignItems:"space-between"}}>
           <Stack direction="row" spacing={4}>
-            <Typography variant="body1" paragraph>Öppna</Typography>
-            <Typography variant="body1" paragraph>Stängda</Typography>
+            <Link component={NavLink} to="/auctions"><Typography variant="body1" paragraph>Öppna</Typography></Link>
+            <Link component={NavLink} to="/auctions/?closed=yes"><Typography variant="body1" paragraph>Stängda</Typography></Link>
+
+            
 
           </Stack>
           <Box sx={{width:"200px"}}>
