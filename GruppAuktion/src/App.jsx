@@ -8,6 +8,7 @@ import NavBar from './components/NavBar'
 import UserContextProvider from "./context/UserContextProvider";
 import AuctionsPage from "./components/Views/AuctionsPage/AuctionsPage";
 import CreateAuction from "./components/Views/CreateAuction";
+import AuctionDetail from "./components/Views/AuctionDetail";
 
 const App = () => {
   return (
@@ -22,7 +23,7 @@ const App = () => {
             <Route path='/contact' Component={DummyComponent} />
             <Route path='/auctions' Component={AuctionsPage} />
             <Route path='/auctions/open' Component={AuctionsPage} />
-
+            <Route path='/auktion/:id' Component={AuctionDetail} />
           </Routes>
         </UserContextProvider>
       </SearchContextProvider>
