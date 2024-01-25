@@ -3,6 +3,7 @@ import {useSearchParams, useLocation} from "react-router-dom";
 import { useState, useEffect } from 'react';
 import AuctionsHeader from './components/AuctionsHeader';
 import AuctionList from './components/AuctionList';
+import "./AuctionsPage.css";
 
 const AuctionsPage = () => {
   const location = useLocation();
@@ -71,7 +72,7 @@ const AuctionsPage = () => {
   return (
     <>
       {loading ? <h1>loading...</h1> : 
-      <Container sx={{flexGrow:1, display:"flex", flexDirection:"column"}}  >
+      <Container className="auction-page-container" sx={{width:"80%", height:"100%"}}>
           <AuctionsHeader closed={closed} q={q}/>
           {q ? <Typography variant="h5">{auctions?.length} {auctions.length === 1 ? "träff" : "träffar"} på sökning: {q}</Typography> : <></> }
           <AuctionList auctions={auctions} />
