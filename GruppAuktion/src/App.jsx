@@ -6,7 +6,11 @@ import SearchContextProvider from "./context/SearchContextProvider";
 // import './App.css'
 import NavBar from './components/NavBar'
 import UserContextProvider from "./context/UserContextProvider";
+
+
+
 import CreateAuction from "./components/Views/CreateAuction";
+import AuctionDetail from "./components/Views/AuctionDetail";
 
 const App = () => {
   return (
@@ -19,6 +23,7 @@ const App = () => {
             <Route exact path='/' Component={DummyComponent} />
             <Route path='/add-auction' Component={CreateAuction} /> {/* Cissi jobbar på denna lägg till auktion */}
             <Route path='/contact' Component={DummyComponent} />
+            <Route path='/auktion/:id' Component={AuctionDetail} />
           </Routes>
         </UserContextProvider>
       </SearchContextProvider>
