@@ -3,14 +3,20 @@ import Container from '@mui/material/Container'
 import { Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUserContext } from '../../context/UserContextProvider'
+import {useSearchParams} from 'react-router-dom';
 
 
 // Några inputs och en knapp för att skicka vidare formuläret. 
 const CreateAuction = () => {
+    // Om formData finns så ska formulären fyllas i med den informationen. 
     const { user } = useUserContext();
-    const date = new Date()
+    const [searchParams, ] = useSearchParams();
+    const toChange = searchParams.get('id');
+    
+    const date = new Date();
+    const currentDate = date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
     const closingDate = () => {
 
@@ -20,7 +26,6 @@ const CreateAuction = () => {
     };
 
     const auctionClosingDate = closingDate();
-    const currentDate = date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
 
     const [formData, setFormData] = useState({ Titel: "", Beskrivning: "", StartDatum: currentDate, SlutDatum: auctionClosingDate, Gruppkod: "100", Utropspris: "", SkapadAv: user });
@@ -35,7 +40,7 @@ const CreateAuction = () => {
         });
     };
 
-    const handleSubmit = () => {
+    const handleNewSubmit = () => {
 
         const url = "http://localhost:5145/api/auktion";
 
@@ -45,9 +50,44 @@ const CreateAuction = () => {
             headers: { "content-type": "application/json" }
         })
     };
+    const handleEditSubmit = () => {
+        const changeFormData = {...formData, AuktionId: Number(toChange)};
+        console.log(changeFormData)
+        const url = "http://localhost:5145/api/auktion"; 
+
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(changeFormData),
+            headers: { "content-type": "application/json" }
+        })
+    };
+
+    useEffect(()=>{
+        const url = "http://localhost:5145/api/auktion/100/" + toChange; 
+
+        const fetchAuction = async()=>{
+            const auction = await fetch(url)
+            .then(result => result.json())
+            .then(data => data);
+            console.log(auction);
+            setFormData({
+                AuktionId: auction.auctionID,
+                Titel: auction.titel, 
+                Beskrivning: auction.beskrivning, 
+                StartDatum: currentDate, 
+                SlutDatum: auctionClosingDate, 
+                Gruppkod: auction.gruppkod, 
+                Utropspris: auction.utropspris, 
+                SkapadAv: auction.skapadAv });
+        }
+
+        if(toChange){
+            fetchAuction();
+        }
+    }, [toChange])
 
     return (<>
-        <Container justifyContent='center' width="70%">
+        <Container justifycontent='center' width="70%">
             <Typography
                 variant="h4"
                 noWrap
@@ -84,28 +124,22 @@ const CreateAuction = () => {
                     fullWidth
                     multiline
                     rows={10} />
-
                 <TextField InputProps={{ readOnly: true, }}
                     id="startDate-input"
                     label="Startdatum"
                     name="StartDatum"
                     value={formData.StartDatum}
-                    variant="filled"
-                /> {/* stardatum ska sättas automatiskt. */}
+                    variant="filled" /> 
                 <TextField InputProps={{ readOnly: true, }}
                     id="endDate-input"
                     label="Slutdatum"
                     name="SlutDatum"
                     value={formData.SlutDatum}
-                    variant="filled"
-                />
-                <Button variant="contained" onClick={handleSubmit}>Skapa auktion</Button>
+                    variant="filled" />
+                <Button variant="contained" onClick={handleNewSubmit}>Skapa auktion</Button>
+                <Button variant="contained" onClick={handleEditSubmit}>Ändra auktion</Button>
             </Stack>
         </Container>
-
-
-
-
     </>)
 
 }
