@@ -79,13 +79,6 @@ export default function NavBar() {
     const createAuction = () => {
         navigate("/add-auction");
     }
-    const addDays = () => {
-        const newDate = new Date();
-        newDate.setDate(newDate.getDate() + 5);
-        console.log(newDate);
-        return newDate;
-    }
-    addDays();
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
         <Menu
