@@ -24,8 +24,8 @@ const handleUserLoggedIn = () =>{
 
 const handleBid = async (summa) => {
     if(parseInt(bidAmount) > getBid[0].summa) {summa = parseInt(bidAmount)}
-    else{alert('För lågt bud')}
-    if (isAuctionActive() && handleUserLoggedIn()) {
+    else{alert('För lågt bud'); return;}
+    if (!closed && handleUserLoggedIn()) {
         const bidData = {
             BudID: 0,
             Summa: summa,
@@ -43,8 +43,6 @@ const handleBid = async (summa) => {
                 }
             });
 
-            const data = await response.json();
-            console.log(data);
 
             const newBid = {budgivare:user, summa: summa}
             setGetBid([newBid, ...getBid])
@@ -73,10 +71,10 @@ useEffect(() => {
             console.error('Kan ej hämta bud', error);
         }
     };
+    fetchBidData();
+    // const interval = setInterval(fetchBidData, 50); 
 
-    const interval = setInterval(fetchBidData, 50); 
-
-    return () => clearInterval(interval); 
+    // return () => clearInterval(interval); 
 }, [params.id]);
 
 
@@ -86,7 +84,7 @@ const getMonthName = (dateString) => {
   };
 
   const auctionCompleted = () =>{
-    if(isAuctionActive()){
+    if(!closed){
         return <div>
              <p>Avslutas <br /> {getMonthName(auction.slutDatum)}</p>
         </div>
@@ -98,12 +96,14 @@ const getMonthName = (dateString) => {
     }
   }
   const renderBidHistory = () => {
-     if(!isAuctionActive() && getBid && getBid.length < 0 ){
+    // console.log(getBid, getBid.length)
+    console.count("rendered")
+     if(closed && getBid.length === 0 ){
         return <div className = "auction-completed">
             <h4>Ingen vann auktionen</h4>
         </div>;
     }
-    else if (!isAuctionActive()) {
+    else if (closed) {
         return <div className = "auction-completed">
             <h4>{getBid[0].budgivare} vann auktionen</h4>
             <p>Högsta vinnade budet {getBid[0].summa} kr</p>
@@ -116,8 +116,8 @@ const getMonthName = (dateString) => {
         </div>;
     } 
     else {
-        return getBid.map(bid => (
-            <div key={bid.budID} className="bid-item">
+        return getBid.map((bid, idx) => (
+            <div key={bid.budID + idx + bid.summa} className="bid-item">
                 <div className="bid-Name">
                     <p className="bidgivare">{bid.budgivare}</p>
                     <p className="summa">{bid.summa} kr</p>
@@ -171,12 +171,12 @@ const bidStartPrice = () => {
                         placeholder="Lägg bud"
                         value={bidAmount}
                         onChange={(e) => setBidAmount(e.target.value)}
-                        disabled={!isAuctionActive() || !handleUserLoggedIn()}
+                        disabled={closed || !handleUserLoggedIn()}
                     />
                         <button
                                 className="add"
                                 onClick={handleBid}
-                                disabled={!isAuctionActive()||!handleUserLoggedIn()}
+                                disabled={closed||!handleUserLoggedIn()}
                             >
                                 Lägg bud
                             </button>
