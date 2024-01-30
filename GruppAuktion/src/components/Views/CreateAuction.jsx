@@ -12,8 +12,22 @@ import {useUserContext} from '../../context/UserContextProvider'
 // Några inputs och en knapp för att skicka vidare formuläret. 
 const CreateAuction = () => {
     const {user} = useUserContext();
-    // ta fram dagens datum
-    const [formData, setFormData] = useState({ Titel: "", Beskrivning: "", StartDatum: {datum}, SlutDatum: "", Gruppkod: "100", Utropspris: "", SkapadAv: {user} });
+    const date = new Date()
+    const currentDate = date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' })
+
+
+    const closingDate = () => {
+        
+        date.setDate(date.getDate() + 7)
+        
+        return date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' });
+    } ;
+
+    const auctionClosingDate = closingDate()
+
+console.log("visa startdatum",currentDate)
+console.log("visa slutdatum",auctionClosingDate)
+    const [formData, setFormData] = useState({ Titel: "", Beskrivning: "", StartDatum: currentDate, SlutDatum: auctionClosingDate, Gruppkod: "100", Utropspris: "", SkapadAv: user });
 
 
     const handleChange = (event) => {
@@ -36,23 +50,6 @@ const CreateAuction = () => {
             headers: { "content-type": "application/json" }
         })
     };
-
-    // useEffect(() => {
-    //     // const url = "http://localhost:5145/api/auktion"; 
-
-    //     // fetch(url, {
-    //     //     method: "POST",
-    //     //     body: JSON.stringify(formData),
-    //     //     // man kan också skicka med headers såhär:
-    //     //     headers: { "content-type": "application/json" }
-    //     // })
-    //         // .then(response => response.json())
-    //         // .then(newId => {
-    //         //     document.querySelector("#responstext").innerText = newId.id;
-    //         // })
-    //     // console.log(formData)
-
-    // })
 
     return (<>
         <Typography
@@ -98,20 +95,21 @@ const CreateAuction = () => {
                     fullWidth
                     multiline
                     rows={10} />
-                <TextField required
-                    id="endDate-input"
-                    label="Slutdatum"
-                    name="SlutDatum"
-                    value={formData.SlutDatum}
-                    variant="filled"
-                    onChange={handleChange} />
-                <TextField InputProps={{ readOnly: true, }}
+
+                    <TextField InputProps={{ readOnly: true, }}
                     id="startDate-input"
                     label="Startdatum"
                     name="StartDatum"
                     value={formData.StartDatum}
                     variant="filled"
-                    onChange={handleChange} /> {/* stardatum ska sättas automatiskt. */}
+                     /> {/* stardatum ska sättas automatiskt. */}
+                    <TextField InputProps = {{ readOnly: true,}}
+                    id="endDate-input"
+                    label="Slutdatum"
+                    name="SlutDatum"
+                    value={formData.SlutDatum}
+                    variant="filled"
+                    />
             </Stack>
             <Button onClick={handleSubmit}>KNAPP som inte syns??</Button>
 
