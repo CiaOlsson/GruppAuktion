@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router';
 import TextField from '@mui/material/TextField'
 import Container from '@mui/material/Container'
 import { Typography } from '@mui/material';
@@ -6,14 +5,13 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { useUserContext } from '../../context/UserContextProvider'
+import { red } from '@mui/material/colors';
 
 
 // Några inputs och en knapp för att skicka vidare formuläret. 
 const CreateAuction = () => {
     const { user } = useUserContext();
     const date = new Date()
-    const currentDate = date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' })
-
 
     const closingDate = () => {
 
@@ -22,10 +20,10 @@ const CreateAuction = () => {
         return date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' });
     };
 
-    const auctionClosingDate = closingDate()
+    const auctionClosingDate = closingDate();
+    const currentDate = date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
-    console.log("visa startdatum", currentDate)
-    console.log("visa slutdatum", auctionClosingDate)
+
     const [formData, setFormData] = useState({ Titel: "", Beskrivning: "", StartDatum: currentDate, SlutDatum: auctionClosingDate, Gruppkod: "100", Utropspris: "", SkapadAv: user });
 
 
@@ -45,30 +43,24 @@ const CreateAuction = () => {
         fetch(url, {
             method: "POST",
             body: JSON.stringify(formData),
-            // man kan också skicka med headers såhär:
             headers: { "content-type": "application/json" }
         })
     };
 
     return (<>
-        <Typography
-            variant="h4"
-            noWrap
-            component="div"
-            textAlign="center"
-            sx={{ m: 5 }}
-        >
-            Lägg till auktionsobjekt
-        </Typography>
-        <Container sx={{
-            m: 4,
-            height: '100vh',
-        }}>
+        <Container justifyContent='center' width="70%">
+            <Typography
+                variant="h4"
+                noWrap
+                component="div"
+                // textAlign="center"
+                sx={{ m: 5 }}
+            >
+                Lägg till auktionsobjekt
+            </Typography>
 
-            {/* Gör lite margins och padding mellan boxarna och så att innehållet centreras på sidan. 
-        Samt fixa logiken, testa göra ett put request */}
 
-            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
+            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" >
                 <TextField required
                     id="heading-input"
                     label="Rubrik"
@@ -90,7 +82,7 @@ const CreateAuction = () => {
                     value={formData.Beskrivning}
                     variant="filled"
                     onChange={handleChange}
-                    sx={{ maxWidth: "90%" }}
+                    sx={{ maxWidth: "100%" }}
                     fullWidth
                     multiline
                     rows={10} />
@@ -109,12 +101,12 @@ const CreateAuction = () => {
                     value={formData.SlutDatum}
                     variant="filled"
                 />
+                <Button variant="contained" onClick={handleSubmit}>Skapa auktion</Button>
             </Stack>
-            <Button onClick={handleSubmit}>KNAPP som inte syns??</Button>
-
-            <Button>KNAPP som inte syns??</Button>
-            <Button>Ändra styling på knapparna så att de syns</Button>
         </Container>
+
+
+
 
     </>)
 
