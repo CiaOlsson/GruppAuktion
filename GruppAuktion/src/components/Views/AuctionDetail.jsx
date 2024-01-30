@@ -10,45 +10,47 @@ const AuctionDetail = () => {
     console.log(closed)
     const [auction, setAuction] = useState(null)
     const [getBid, setGetBid] = useState(null)
+    const [bidAmount, setBidAmount] = useState("");
     const {user} = useUserContext()
     const isAuctionActive = () =>{
     return new Date(auction.startDatum) < new Date(auction.slutDatum);
 
 }
 const handleUserLoggedIn = () =>{
+    
    return (user.length > 0)
 
 }
 
-const handleBid = async (auktionsID, summa, budgivare) => {
-    if (isAuctionActive()) {
+const handleBid = async (summa) => {
+    if(parseInt(bidAmount) > getBid[0].summa) {summa = parseInt(bidAmount)}
+    else{alert('För lågt bud')}
+    if (isAuctionActive() && handleUserLoggedIn()) {
         const bidData = {
             BudID: 0,
-            Summa: parseInt(summa),
-            AuktionID: auktionsID,
-            Budgivare: budgivare
+            Summa: summa,
+            AuktionID: params.id,
+            Budgivare: user 
         };
 
-        console.log(bidData); 
+        console.log(bidData);
 
-        fetch('http://localhost:5145/api/bud', {
-            method: 'POST',
-            body: JSON.stringify(bidData),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(res => res.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error placing bid:', error));
+            const response = await fetch('/api/bud', {
+                method: 'POST',
+                body: JSON.stringify(bidData),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
 
+            const data = await response.json();
+            console.log(data);
+
+            const newBid = {budgivare:user, summa: summa}
+            setGetBid([newBid, ...getBid])
         
     }
 }
-
-
-
-
 
 useEffect(() => {
     console.log(params.id)
@@ -62,15 +64,21 @@ useEffect(() => {
 }, [params.id]);
 
 useEffect(() => {
-    fetch(`http://localhost:5145/api/bud/100/${params.id}`)
-        .then(res => res.json())
-        .then(data => {
+    const fetchBidData = async () => {
+        try {
+            const response = await fetch(`http://localhost:5145/api/bud/100/${params.id}`);
+            const data = await response.json();
             setGetBid(data.reverse());
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Kan ej hämta bud', error);
-        });
+        }
+    };
+
+    const interval = setInterval(fetchBidData, 50); 
+
+    return () => clearInterval(interval); 
 }, [params.id]);
+
 
 
 const getMonthName = (dateString) => {
@@ -90,12 +98,24 @@ const getMonthName = (dateString) => {
     }
   }
   const renderBidHistory = () => {
-    if (!isAuctionActive()) {
+     if(!isAuctionActive() && getBid && getBid.length < 0 ){
+        return <div className = "auction-completed">
+            <h4>Ingen vann auktionen</h4>
+        </div>;
+    }
+    else if (!isAuctionActive()) {
         return <div className = "auction-completed">
             <h4>{getBid[0].budgivare} vann auktionen</h4>
             <p>Högsta vinnade budet {getBid[0].summa} kr</p>
         </div>;
-    } else {
+    } 
+    
+    else if (getBid && getBid.length < 0) {
+        return <div className = "no-bids">
+            
+        </div>;
+    } 
+    else {
         return getBid.map(bid => (
             <div key={bid.budID} className="bid-item">
                 <div className="bid-Name">
@@ -145,7 +165,14 @@ const bidStartPrice = () => {
                         <div className="bid-button">
                         <h2 className="start-price">{bidStartPrice()} kr</h2>
                         <div className="line-1"></div>
-                        <input className = "bid-input" type="text" placeholder ='Lägg bud'  disabled={!isAuctionActive()||!handleUserLoggedIn()}/>
+                        <input
+                        className="bid-input"
+                        type="text"
+                        placeholder="Lägg bud"
+                        value={bidAmount}
+                        onChange={(e) => setBidAmount(e.target.value)}
+                        disabled={!isAuctionActive() || !handleUserLoggedIn()}
+                    />
                         <button
                                 className="add"
                                 onClick={handleBid}
