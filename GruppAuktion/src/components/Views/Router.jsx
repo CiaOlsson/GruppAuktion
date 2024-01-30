@@ -1,8 +1,8 @@
 import {Route, Routes} from "react-router-dom";
-import DummyComponent from "./DummyComponent";
-import AuctionsPage from "./components/Views/AuctionsPage/AuctionsPage";
-import CreateAuction from "./components/Views/CreateAuction";
-import AuctionDetail from "./components/Views/AuctionDetail";
+import DummyComponent from "../../DummyComponent";
+import AuctionsPage from "../Views/AuctionsPage/AuctionsPage"
+import CreateAuction from "../Views/CreateAuction";
+import AuctionDetail from "../Views/AuctionDetail";
 
 const Router = () => {
     return (
