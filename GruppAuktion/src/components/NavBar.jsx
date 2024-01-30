@@ -158,13 +158,13 @@ export default function NavBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar sx={{flexDirection:"row", justifyContent:"space-between", alignItems:"space-between"}}>
+        <Toolbar sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "space-between" }}>
           <Stack direction="row" spacing={4}>
             <Typography variant="body1" paragraph>Öppna</Typography>
             <Typography variant="body1" paragraph>Stängda</Typography>
 
           </Stack>
-          <Box sx={{width:"200px"}}>
+          <Box sx={{ width: "200px" }}>
             <Typography
               variant="h6"
               noWrap
