@@ -11,7 +11,8 @@ const AuctionList = (props) => {
     return (
         <Grid sx={{marginBottom:"20px", marginTop:"20px"}} container spacing={3}>
             {moreAuctions.map((auction, idx) => {
-                const href = `/auktion/${auction.auktionID}` 
+                const closed = props.closed ? "?closed=true" : ""
+                const href = `/auktion/${auction.auktionID}${closed}` 
                 return (
                 <Grid className="auction-card" item key={idx}>
                     <Link underline="none" component={NavLink} to={href}>

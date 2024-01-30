@@ -4,6 +4,7 @@ import AuctionsPage from "../Views/AuctionsPage/AuctionsPage"
 import CreateAuction from "../Views/CreateAuction";
 import AuctionDetail from "../Views/AuctionDetail";
 import LoginPage from "./LoginPage/components/LoginPage";
+import AccountPage from "./AccountPage/AccountPage";
 
 const Router = () => {
     return (
@@ -15,6 +16,7 @@ const Router = () => {
             <Route path='/auctions/open' Component={AuctionsPage} />
             <Route path='/auktion/:id' Component={AuctionDetail} />
             <Route path='/login' Component={LoginPage} />
+            <Route path='/account' Component={AccountPage} />
         </Routes>
     )
 }
