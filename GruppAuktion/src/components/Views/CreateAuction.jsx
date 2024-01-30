@@ -53,7 +53,6 @@ const CreateAuction = () => {
                 variant="h4"
                 noWrap
                 component="div"
-                // textAlign="center"
                 sx={{ m: 5 }}
             >
                 Lägg till auktionsobjekt
