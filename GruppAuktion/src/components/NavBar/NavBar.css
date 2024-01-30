@@ -1,0 +1,9 @@
+.navbar-auction-redirects {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-auction-redirects:hover {
+    color: rgba(255, 255, 255, 0.829);
+    transform: scale(1.05);
+}
