@@ -6,18 +6,34 @@ const AuctionDetail = () => {
     const params = useParams()
     const [auction, setAuction] = useState(null)
 
+const isAuctionActive = () =>{
+    return new Date(auction.startDatum) < new Date(auction.slutDatum);
+}
+
+const handleBid = () =>{
+    if (isAuctionActive()) {
+        
+        console.log('Bud genomförd');
+    } else {
+        console.log('Auktion inte tillgänglig');
+    }
+
+}
 
 useEffect(() => {
-    fetch(`http://localhost:5145/api/auktion/${params.id}`)
+    console.log(params.id)
+    fetch(`http://localhost:5173/api/auktion/100/${params.id}`)
         .then(res => res.json())
-        .then(data => setAuction(data[0]))
+        .then(data => setAuction(data))
         .catch(error => {
             console.error('Error fetching auction details:', error);
             
         });
 }, [params.id]);
 
-    
+const getMonthName = (dateString) => {
+    return new Date(dateString).toLocaleDateString('sv-SE', { year: 'numeric' ,day: 'numeric', month: 'long' });
+  };
 
     return ( 
         <div className="auction-detail-container">
@@ -25,32 +41,45 @@ useEffect(() => {
         {auction ? (
             <div className="auction-detail">
 
-                <div className="img-container">
-                    <img src="/traktor.jpg" alt="" />
-                    <div className="description-container">
-                        <h3>Beskrivning</h3>
-                        
-                        <p className="auction-description">{auction.beskrivning}</p>
-                       
+                <div className="starter">
+                    <div className="img-container">
+                        <img className = "image"src="/traktor.jpg" alt="" />
                     </div>
+
+                    <div className="title-container">
+                    
+                        <h2 className = "auction-title">{auction.titel}</h2>
+                        </div>
+
+                        <div className="description-container">
+                            <h3 clasName = "de">Beskrivning</h3>
+                            <p className="auction-description">{auction.beskrivning}</p>
+                        </div>
+                        <p className="start-date">Publicerad {getMonthName(auction.startDatum)}</p>
+
                 </div>
 
+
                 <div className="start">
-                    <div className="title-container">
-                    <p className="start-date">{auction.startDatum}</p>
-
-                        <h2 className = "auction-title">{auction.titel}</h2>
-                    </div>
-
-                    <div className="start-price container">
-                        <h2 className="start-price">{auction.utropspris}</h2>
-                        <button className = "add" >Lägg bud</button>
+                    <div className="auction-end">
+                        <p>Avslutas <br /> {getMonthName(auction.slutDatum)}</p>
                     </div>
 
 
+                    <div className="start-price-container">
+                        <div className="price-button">
+                        <h2 className="start-price">{auction.utropspris} kr</h2>
+                        <div className="line-1"></div>
+                        <button
+                                className="add"
+                                onClick={handleBid}
+                                disabled={!isAuctionActive()}
+                            >
+                                Lägg bud
+                            </button>
+                        </div>
+                    </div>
 
-                   
-                    <p className="slut-datum">{(auction.slutDatum)}</p>
                     <p className="created-by">Skapad av {auction.skapadAv}</p>
 
                     

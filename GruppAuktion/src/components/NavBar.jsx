@@ -14,7 +14,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Stack } from '@mui/material';
+import { Link, Stack } from '@mui/material';
+import {NavLink, useNavigate} from "react-router-dom"
+import { useState } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -58,8 +60,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavBar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -154,14 +156,25 @@ export default function NavBar() {
       </MenuItem>
     </Menu>
   );
+  const navigate = useNavigate();
 
+  const handleSearch = event => {
+    if (event.keyCode === 13) {
+      console.log(event.target.value)
+      const encode = encodeURI(event.target.value);
+      const url = "/auctions?q=" + encode;
+      navigate(url);  
+    }
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "space-between" }}>
           <Stack direction="row" spacing={4}>
-            <Typography variant="body1" paragraph>Öppna</Typography>
-            <Typography variant="body1" paragraph>Stängda</Typography>
+            <Link component={NavLink} to="/auctions"><Typography variant="body1" paragraph>Öppna</Typography></Link>
+            <Link component={NavLink} to="/auctions/?closed=yes"><Typography variant="body1" paragraph>Stängda</Typography></Link>
+
+            
 
           </Stack>
           <Box sx={{ width: "200px" }}>
@@ -177,11 +190,11 @@ export default function NavBar() {
 
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Search>
+            <Search >
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
-              <StyledInputBase
+              <StyledInputBase onKeyDown={handleSearch}
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
               />
