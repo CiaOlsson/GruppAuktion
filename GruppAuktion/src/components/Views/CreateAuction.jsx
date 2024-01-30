@@ -1,149 +1,117 @@
-import { useNavigate } from 'react-router';
 import TextField from '@mui/material/TextField'
 import Container from '@mui/material/Container'
 import { Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import {useState, useEffect} from 'react';
-
+import { useState } from 'react';
+import { useUserContext } from '../../context/UserContextProvider'
+import { red } from '@mui/material/colors';
 
 
 // Några inputs och en knapp för att skicka vidare formuläret. 
 const CreateAuction = () => {
-    // const navigate = useNavigate();
+    const { user } = useUserContext();
+    const date = new Date()
 
-    // ***********************************************************************************************************
-    // document.querySelector("#save").addEventListener('click', () => {
-    //     let title = document.querySelector("#title").value;
-    //     let body = document.querySelector("#body").value;
+    const closingDate = () => {
 
-    //     let blogPost = new Blogpost(title, body, 1);
+        date.setDate(date.getDate() + 7)
 
-    //     let url = "https://jsonplaceholder.typicode.com/posts/";
+        return date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' });
+    };
 
-    //     fetch(url, {
-    //         method: "POST",
-    //         body: JSON.stringify(blogPost),
-    //         // man kan också skicka med headers såhär:
-    //         headers: { "content-type": "application/json" }
-    //     })
-    //         .then(response => response.json())
-    //         .then(newId => {
-    //             document.querySelector("#responstext").innerText = newId.id;
-    //         })
-    // })
-    // ******************************************************************************************************************
-    
-    const [formData, setFormData] = useState({Titel: "", Beskrivning: "", StartDatum: "2024-01-26", SlutDatum: "", Gruppkod: "100", Utropspris: "", SkapadAv: "användare"});
+    const auctionClosingDate = closingDate();
+    const currentDate = date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
-    const handleChange = (event) =>{
-          const changedField = event.target.name;
-          const newValue = event.target.value;
-          setFormData((currentData) => {
+
+    const [formData, setFormData] = useState({ Titel: "", Beskrivning: "", StartDatum: currentDate, SlutDatum: auctionClosingDate, Gruppkod: "100", Utropspris: "", SkapadAv: user });
+
+
+    const handleChange = (event) => {
+        const changedField = event.target.name;
+        const newValue = event.target.value;
+        setFormData((currentData) => {
             currentData[changedField] = newValue;
-            return {...currentData};
-          });
+            return { ...currentData };
+        });
     };
 
     const handleSubmit = () => {
-        const url = "http://localhost:5145/api/auktion"; 
+
+        const url = "http://localhost:5145/api/auktion";
 
         fetch(url, {
             method: "POST",
             body: JSON.stringify(formData),
-            // man kan också skicka med headers såhär:
             headers: { "content-type": "application/json" }
         })
     };
 
-    // useEffect(() => {
-    //     // const url = "http://localhost:5145/api/auktion"; 
-
-    //     // fetch(url, {
-    //     //     method: "POST",
-    //     //     body: JSON.stringify(formData),
-    //     //     // man kan också skicka med headers såhär:
-    //     //     headers: { "content-type": "application/json" }
-    //     // })
-    //         // .then(response => response.json())
-    //         // .then(newId => {
-    //         //     document.querySelector("#responstext").innerText = newId.id;
-    //         // })
-    //     // console.log(formData)
-        
-    // })
-    
     return (<>
-        <Typography
-            variant="h4"
-            noWrap
-            component="div"
-            textAlign="center"
-            sx={{ m: 5 }}
-        >
-            Lägg till auktionsobjekt
-        </Typography>
-        <Container sx={{
-            m: 4,
-            height: '100vh',
-        }}>
+        <Container justifyContent='center' width="70%">
+            <Typography
+                variant="h4"
+                noWrap
+                component="div"
+                // textAlign="center"
+                sx={{ m: 5 }}
+            >
+                Lägg till auktionsobjekt
+            </Typography>
 
-            {/* Gör lite margins och padding mellan boxarna och så att innehållet centreras på sidan. 
-        Samt fixa logiken, testa göra ett put request */}
-           
-                <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
-                    <TextField required 
-                    id="heading-input" 
-                    label="Rubrik" 
-                    name="Titel" 
+
+            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" >
+                <TextField required
+                    id="heading-input"
+                    label="Rubrik"
+                    name="Titel"
                     value={formData.Titel}
                     variant="filled"
                     onChange={handleChange} />
-                    <TextField required 
-                    id="price-input" 
-                    label="Pris" 
-                    name="Utropspris" 
+                <TextField required
+                    id="price-input"
+                    label="Pris"
+                    name="Utropspris"
                     value={formData.Utropspris}
                     variant="filled"
                     onChange={handleChange} />
-                    <TextField  
-                    id="description-input" 
-                    label="Beskrivning" 
-                    name="Beskrivning" 
+                <TextField
+                    id="description-input"
+                    label="Beskrivning"
+                    name="Beskrivning"
                     value={formData.Beskrivning}
                     variant="filled"
-                    onChange={handleChange} 
-                    sx={{ maxWidth: "90%" }} 
-                    fullWidth 
-                    multiline 
+                    onChange={handleChange}
+                    sx={{ maxWidth: "100%" }}
+                    fullWidth
+                    multiline
                     rows={10} />
-                    <TextField required 
-                    id="endDate-input" 
-                    label="Slutdatum" 
-                    name="SlutDatum"
-                    value={formData.SlutDatum}
-                    variant="filled"
-                    onChange={handleChange} />
-                    <TextField InputProps={{ readOnly: true, }} 
-                    id="startDate-input" 
-                    label="Startdatum" 
+
+                <TextField InputProps={{ readOnly: true, }}
+                    id="startDate-input"
+                    label="Startdatum"
                     name="StartDatum"
                     value={formData.StartDatum}
                     variant="filled"
-                    onChange={handleChange} /> {/* stardatum ska sättas automatiskt. */}
-                </Stack>
-                <Button onClick={handleSubmit}>KNAPP som inte syns??</Button>
-           
-            <Button>KNAPP som inte syns??</Button>
-            <Button>Ändra styling på knapparna så att de syns</Button>
+                /> {/* stardatum ska sättas automatiskt. */}
+                <TextField InputProps={{ readOnly: true, }}
+                    id="endDate-input"
+                    label="Slutdatum"
+                    name="SlutDatum"
+                    value={formData.SlutDatum}
+                    variant="filled"
+                />
+                <Button variant="contained" onClick={handleSubmit}>Skapa auktion</Button>
+            </Stack>
         </Container>
 
 
-        {/* <button onClick={() => navigate("/")}>Tillbaka med en knapp</button> */}
+
+
     </>)
 
 }
 
 export default CreateAuction;
+
 
