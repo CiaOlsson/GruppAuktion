@@ -4,6 +4,8 @@ export const UserContext = createContext(null);
 const UserContextProvider = ({children}) => {
     const [user, setUser] = useState("");
 
+    //const {user} = useUserContext();
+    //<button disabled={user.length === 0} /> 
     return (
         <UserContext.Provider value={{user, setUser}}>
             {children}

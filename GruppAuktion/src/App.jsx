@@ -1,16 +1,10 @@
 import { DarkTheme } from "./theme/theme";
 import { ThemeProvider, CssBaseline } from "@mui/material"
-import { Routes, Route } from "react-router";
-import DummyComponent from "./DummyComponent";
 import SearchContextProvider from "./context/SearchContextProvider";
-// import './App.css'
+import './App.css'
 import NavBar from './components/NavBar'
 import UserContextProvider from "./context/UserContextProvider";
-
-
-
-import CreateAuction from "./components/Views/CreateAuction";
-import AuctionDetail from "./components/Views/AuctionDetail";
+import Router from "./components/Views/Router";
 
 const App = () => {
   return (
@@ -19,12 +13,7 @@ const App = () => {
         <UserContextProvider>
           <CssBaseline />
           <NavBar />
-          <Routes>
-            <Route exact path='/' Component={DummyComponent} />
-            <Route path='/add-auction' Component={CreateAuction} /> {/* Cissi jobbar på denna lägg till auktion */}
-            <Route path='/contact' Component={DummyComponent} />
-            <Route path='/auktion/:id' Component={AuctionDetail} />
-          </Routes>
+          <Router />
         </UserContextProvider>
       </SearchContextProvider>
     </ThemeProvider>
