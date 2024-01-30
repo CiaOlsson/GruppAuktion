@@ -2,7 +2,7 @@ import { DarkTheme } from "./theme/theme";
 import { ThemeProvider, CssBaseline } from "@mui/material"
 import SearchContextProvider from "./context/SearchContextProvider";
 import './App.css'
-import NavBar from './components/NavBar'
+import NavBar from './components/NavBar/NavBar'
 import UserContextProvider from "./context/UserContextProvider";
 import Router from "./components/Views/Router";
 
