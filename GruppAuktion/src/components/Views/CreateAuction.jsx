@@ -5,7 +5,6 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { useUserContext } from '../../context/UserContextProvider'
-import { red } from '@mui/material/colors';
 
 
 // Några inputs och en knapp för att skicka vidare formuläret. 
