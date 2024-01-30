@@ -75,7 +75,7 @@ const AuctionsPage = () => {
       <Container className="auction-page-container" sx={{width:"80%", height:"100%"}}>
           <AuctionsHeader closed={closed} q={q}/>
           {q ? <Typography variant="h5">{auctions?.length} {auctions.length === 1 ? "träff" : "träffar"} på sökning: {q}</Typography> : <></> }
-          <AuctionList auctions={auctions} />
+          <AuctionList auctions={auctions} closed={closed}/>
 
       </Container>
         
