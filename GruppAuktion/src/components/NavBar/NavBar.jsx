@@ -104,11 +104,11 @@ export default function NavBar() {
         onClose={handleMenuClose}
         >
         {user.length === 0 ? <MenuItem onClick={loginClick}>Logga in</MenuItem> :
-        <>
-            <MenuItem onClick={createAuction}>Skapa auktion</MenuItem>
-            <MenuItem onClick={accountClick}>Konto</MenuItem>
-            <MenuItem onClick={logOutClick}>Logga ut</MenuItem>
-        </>}
+        [
+            <MenuItem key="Skapa auktion" onClick={createAuction}>Skapa auktion</MenuItem>,
+            <MenuItem key="Konto" onClick={accountClick}>Konto</MenuItem>,
+            <MenuItem key="Logga ut" onClick={logOutClick}>Logga ut</MenuItem>,
+        ]}
         </Menu>
     );
 
