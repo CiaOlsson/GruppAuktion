@@ -1,9 +1,8 @@
-img{
+.image{
     height: 400px;
     width: 500px;
     object-fit: cover;
     border-radius: 5px;
-    margin-block: 47px;
 }
 .auction-detail-container{
     padding: 30px;
@@ -34,7 +33,7 @@ img{
 }
 .description-container{
     margin-top: 10px;
-    height: 300px;
+    height: 200px;
     width: 500px;
     color: white;
     background-color: rgb(36, 36, 36);
@@ -44,15 +43,15 @@ img{
 }
 .add{
     height: 50px;
-    width: 400px;
+    width: 250px;
 }
 .title-container{
-    margin-top: -70px;
+    margin-top: -20px;
 }
 
 .price-button{
     height: 200px;
-    width: 500px;
+    width: 360px;
     background-color: rgb(36, 36, 36);
     display: flex;  
     flex-direction: column;
@@ -60,9 +59,17 @@ img{
     justify-content: center;
 
 }
+.auction-end{
+    height: 90px;
+    width: 360px;
+    background-color: rgb(36, 36, 36);
+    display: flex;  
+    flex-direction: column;
+
+}
 .line-1{
     
-    width: 500px;
+    width: 340px;
     border: 0.5px solid white;
     margin-bottom: 20px;
 }

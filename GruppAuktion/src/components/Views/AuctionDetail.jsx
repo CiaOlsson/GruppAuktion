@@ -6,10 +6,23 @@ const AuctionDetail = () => {
     const params = useParams()
     const [auction, setAuction] = useState(null)
 
+const isAuctionActive = () =>{
+    return new Date(auction.startDatum) < new Date(auction.slutDatum);
+}
+
+const handleBid = () =>{
+    if (isAuctionActive()) {
+        
+        console.log('Bud genomförd');
+    } else {
+        console.log('Auktion inte tillgänglig');
+    }
+
+}
 
 useEffect(() => {
     console.log(params.id)
-    fetch(`http://localhost:5145/api/auktion/100/${params.id}`)
+    fetch(`http://localhost:5173/api/auktion/100/${params.id}`)
         .then(res => res.json())
         .then(data => setAuction(data))
         .catch(error => {
@@ -30,7 +43,7 @@ const getMonthName = (dateString) => {
 
                 <div className="starter">
                     <div className="img-container">
-                        <img src="/traktor.jpg" alt="" />
+                        <img className = "image"src="/traktor.jpg" alt="" />
                     </div>
 
                     <div className="title-container">
@@ -42,21 +55,31 @@ const getMonthName = (dateString) => {
                             <h3 clasName = "de">Beskrivning</h3>
                             <p className="auction-description">{auction.beskrivning}</p>
                         </div>
+                        <p className="start-date">Publicerad {getMonthName(auction.startDatum)}</p>
+
                 </div>
 
 
                 <div className="start">
-                <p className="start-date">{getMonthName(auction.startDatum)}</p>
+                    <div className="auction-end">
+                        <p>Avslutas <br /> {getMonthName(auction.slutDatum)}</p>
+                    </div>
+
 
                     <div className="start-price-container">
                         <div className="price-button">
                         <h2 className="start-price">{auction.utropspris} kr</h2>
                         <div className="line-1"></div>
-                        <button className = "add" >Lägg bud</button>
+                        <button
+                                className="add"
+                                onClick={handleBid}
+                                disabled={!isAuctionActive()}
+                            >
+                                Lägg bud
+                            </button>
                         </div>
                     </div>
 
-                    <p className="slut-datum">slutar {getMonthName(auction.slutDatum)}</p>
                     <p className="created-by">Skapad av {auction.skapadAv}</p>
 
                     
