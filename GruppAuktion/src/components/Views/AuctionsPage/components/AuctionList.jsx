@@ -7,7 +7,7 @@ const AuctionList = (props) => {
 
     //const moreAuctions = new Array(12).fill([...props.auctions]).flat();
     return (
-        <Grid sx={{marginBottom:"20px", marginTop:"20px", justifyContent:"space-between", width:"100%"}} container spacing={3}>
+        <Grid sx={{marginBottom:"20px", marginTop:"20px", justifyContent:"center", width:"100%"}} container spacing={3}>
             {props.auctions.map((auction, idx) => {
                 const closed = props.closed ? "?closed=true" : ""
                 const href = `/auktion/${auction.auktionID}${closed}` 
