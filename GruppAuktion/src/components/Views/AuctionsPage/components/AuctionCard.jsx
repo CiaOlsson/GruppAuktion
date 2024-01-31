@@ -20,6 +20,7 @@ const AuctionCard = ({auction, closed}) => {
       setHighestBid(highest);
     }
     fetchBids();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <Card className="auction-card" sx={{width: "350px", height:"300px"}}>

@@ -1,4 +1,4 @@
-import { Typography, Stack, Grid, Container } from '@mui/material'
+import { Typography, Container } from '@mui/material'
 import {useSearchParams, useLocation} from "react-router-dom";
 import { useState, useEffect } from 'react';
 import AuctionsHeader from './components/AuctionsHeader';
@@ -67,6 +67,7 @@ const AuctionsPage = () => {
     return (() => {
       setLoading(true);
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
   return (
     <>

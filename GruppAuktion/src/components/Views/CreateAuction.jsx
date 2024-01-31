@@ -86,6 +86,7 @@ const CreateAuction = () => {
         if(toChange){
             fetchAuction();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toChange])
 
     return (<>
