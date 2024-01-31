@@ -7,16 +7,15 @@ import "./AuctionList.css";
 const AuctionList = (props) => {
 
     const moreAuctions = new Array(12).fill([...props.auctions]).flat();
-    console.log(moreAuctions)
     return (
-        <Grid sx={{marginBottom:"20px", marginTop:"20px"}} container spacing={3}>
+        <Grid sx={{marginBottom:"20px", marginTop:"20px", justifyContent:"space-between", width:"100%"}} container spacing={3}>
             {moreAuctions.map((auction, idx) => {
                 const closed = props.closed ? "?closed=true" : ""
                 const href = `/auktion/${auction.auktionID}${closed}` 
                 return (
                 <Grid className="auction-card" item key={idx}>
                     <Link underline="none" component={NavLink} to={href}>
-                        <AuctionCard auction={auction} />
+                        <AuctionCard auction={auction} closed={props.closed} />
                     </Link>        
                 </Grid>
                 )

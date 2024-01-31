@@ -9,8 +9,9 @@ import AccountPage from "./AccountPage/AccountPage";
 const Router = () => {
     return (
         <Routes>
-            <Route exact path='/' Component={DummyComponent} />
+            <Route exact path='/' Component={AuctionsPage} />
             <Route path='/add-auction' Component={CreateAuction} /> {/* Cissi jobbar på denna lägg till auktion */}
+            <Route path='/change-auction' Component={CreateAuction} />
             <Route path='/contact' Component={DummyComponent} />
             <Route path='/auctions' Component={AuctionsPage} />
             <Route path='/auctions/open' Component={AuctionsPage} />

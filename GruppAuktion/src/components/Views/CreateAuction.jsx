@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useState, useEffect } from 'react';
 import { useUserContext } from '../../context/UserContextProvider'
-import {useSearchParams} from 'react-router-dom';
+import {useSearchParams, useNavigate} from 'react-router-dom';
 
 
 // Några inputs och en knapp för att skicka vidare formuläret. 
@@ -14,7 +14,7 @@ const CreateAuction = () => {
     const { user } = useUserContext();
     const [searchParams, ] = useSearchParams();
     const toChange = searchParams.get('id');
-    
+    const navigate = useNavigate();
     const date = new Date();
     const currentDate = date.toLocaleDateString('sv-SE', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
@@ -49,10 +49,10 @@ const CreateAuction = () => {
             body: JSON.stringify(formData),
             headers: { "content-type": "application/json" }
         })
+        navigate("/");
     };
     const handleEditSubmit = () => {
         const changeFormData = {...formData, AuktionId: Number(toChange)};
-        console.log(changeFormData)
         const url = "http://localhost:5145/api/auktion"; 
 
         fetch(url, {
@@ -60,6 +60,8 @@ const CreateAuction = () => {
             body: JSON.stringify(changeFormData),
             headers: { "content-type": "application/json" }
         })
+        navigate("/");
+
     };
 
     useEffect(()=>{
@@ -136,8 +138,11 @@ const CreateAuction = () => {
                     name="SlutDatum"
                     value={formData.SlutDatum}
                     variant="filled" />
-                <Button variant="contained" onClick={handleNewSubmit}>Skapa auktion</Button>
+                {toChange ? 
                 <Button variant="contained" onClick={handleEditSubmit}>Ändra auktion</Button>
+                
+                :
+                <Button variant="contained" onClick={handleNewSubmit}>Skapa auktion</Button>}
             </Stack>
         </Container>
     </>)
